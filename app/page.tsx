@@ -5,103 +5,70 @@ import { useState } from "react";
 export default function Home() {
   const [lit, setLit] = useState(false);
 
-  const pet = {
-    name: "小白",
-    birthday: "2018 / 06 / 12",
-    message: "謝謝你陪伴的每一天 🕯",
-    image:
-      "https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=400",
-  };
-
   return (
     <main
       style={{
         minHeight: "100vh",
         background: lit
-          ? "radial-gradient(circle at center, #3a2a10, #000)"
-          : "linear-gradient(to bottom, #1a1a1a, #2b1b0f)",
+          ? "radial-gradient(circle at center, #2b1b0f, #000)"
+          : "#0b0b0f",
         color: "#fff",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        padding: 24,
-        transition: "0.6s",
         textAlign: "center",
+        padding: 24,
       }}
     >
-      {/* 標題 */}
-      <h1 style={{ fontSize: 28, marginBottom: 20 }}>
-        🕯 寵物數位紀念卡
+      {/* Title */}
+      <h1 style={{ fontSize: 28, marginBottom: 8 }}>
+        🕯 寵物祈福紀念平台
       </h1>
 
-      {/* 卡片 */}
+      <p style={{ opacity: 0.7, marginBottom: 40 }}>
+        讓愛，不只停留在回憶
+      </p>
+
+      {/* Candle */}
       <div
         style={{
-          width: 300,
-          background: "#111",
-          borderRadius: 16,
-          padding: 20,
-          boxShadow: lit
-            ? "0 0 30px rgba(245,197,66,0.4)"
-            : "0 0 10px rgba(0,0,0,0.5)",
-        }}
-      >
-        {/* 圖片 */}
-        <img
-          src={pet.image}
-          style={{
-            width: "100%",
-            borderRadius: 12,
-            marginBottom: 12,
-          }}
-        />
-
-        {/* 名字 */}
-        <h2 style={{ fontSize: 22 }}>{pet.name}</h2>
-
-        {/* 生日 */}
-        <p style={{ opacity: 0.7, fontSize: 14 }}>
-          生日：{pet.birthday}
-        </p>
-
-        {/* 訊息 */}
-        <p style={{ marginTop: 10, fontSize: 14 }}>
-          {pet.message}
-        </p>
-      </div>
-
-      {/* 燈 */}
-      <div
-        style={{
-          width: 80,
-          height: 80,
+          width: 120,
+          height: 120,
           borderRadius: "50%",
-          marginTop: 30,
-          background: lit ? "#f5c542" : "#444",
+          background: lit ? "#f5c542" : "#2a2a2a",
           boxShadow: lit
-            ? "0 0 40px rgba(245,197,66,0.8)"
-            : "none",
-          transition: "0.6s",
+            ? "0 0 60px rgba(245,197,66,0.8)"
+            : "0 0 10px rgba(0,0,0,0.6)",
+          transition: "0.8s",
         }}
       />
 
-      {/* 按鈕 */}
+      {/* Button */}
       <button
         onClick={() => setLit(true)}
         disabled={lit}
         style={{
-          marginTop: 20,
-          padding: "12px 24px",
-          borderRadius: 12,
+          marginTop: 30,
+          padding: "14px 28px",
+          borderRadius: 14,
           border: "none",
-          background: lit ? "#999" : "#f5c542",
+          background: lit ? "#666" : "#f5c542",
+          color: "#000",
+          fontWeight: "bold",
           cursor: lit ? "default" : "pointer",
-          fontSize: 14,
+          transition: "0.3s",
         }}
       >
-        {lit ? "已點燈 🕯" : "為小白點燈"}
+        {lit ? "已為牠點燈 🕯" : "點亮祈福"}
       </button>
+
+      {/* Ritual message */}
+      {lit && (
+        <p style={{ marginTop: 30, opacity: 0.9 }}>
+          ✨ 願牠被溫柔記得，安息於光之中
+        </p>
+      )}
     </main>
   );
 }
