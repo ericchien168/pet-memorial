@@ -1,106 +1,80 @@
 'use client'
 
-import { useEffect, useState } from 'react'
-import { supabase } from '@/lib/supabase'
 import { useRouter } from 'next/navigation'
 
-export default function Page() {
+export default function Home() {
   const router = useRouter()
 
-  const [temples, setTemples] = useState<any[]>([])
-  const [products, setProducts] = useState<any[]>([])
-
-  const [name, setName] = useState('')
-  const [phone, setPhone] = useState('')
-  const [pet, setPet] = useState('')
-  const [prayer, setPrayer] = useState('平安健康')
-  const [templeId, setTempleId] = useState('')
-  const [productId, setProductId] = useState('')
-
-  useEffect(() => {
-    loadData()
-  }, [])
-
-  const loadData = async () => {
-    const { data: t } = await supabase.from('temples').select('*')
-    const { data: p } = await supabase.from('products').select('*')
-
-    setTemples(t || [])
-    setProducts(p || [])
-  }
-
-  const submit = async () => {
-    // 1. user
-    const { data: user } = await supabase
-      .from('users')
-      .insert({ name, phone })
-      .select()
-      .single()
-
-    // 2. pet
-    const { data: petRow } = await supabase
-      .from('pets')
-      .insert({
-        user_id: user?.id,
-        name: pet,
-        prayer_text: prayer
-      })
-      .select()
-      .single()
-
-    // 3. order
-    const { data: order } = await supabase
-      .from('orders')
-      .insert({
-        user_id: user?.id,
-        pet_id: petRow?.id,
-        temple_id: templeId,
-        product_id: productId,
-        amount: 600,
-        prayer_text_snapshot: prayer,
-        status: 'pending'
-      })
-      .select()
-      .single()
-
-    router.push('/success')
-  }
-
   return (
-    <div style={{ padding: 20, maxWidth: 400 }}>
-      <h2>寵物平安祈福</h2>
+    <div style={{
+      minHeight: '100vh',
+      background: 'linear-gradient(to bottom, #ffffff, #f5f5f5)',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      padding: 24
+    }}>
+      
+      <div style={{
+        width: '100%',
+        maxWidth: 520,
+        background: '#fff',
+        borderRadius: 16,
+        padding: 28,
+        boxShadow: '0 10px 30px rgba(0,0,0,0.08)'
+      }}>
+        
+        <h1 style={{
+          fontSize: 28,
+          marginBottom: 8
+        }}>
+          🐾 寵物平安祈福平台
+        </h1>
 
-      <input placeholder="姓名" onChange={e => setName(e.target.value)} />
-      <input placeholder="電話" onChange={e => setPhone(e.target.value)} />
+        <p style={{
+          color: '#666',
+          marginBottom: 24
+        }}>
+          為毛孩點一盞平安燈，祈願平安健康
+        </p>
 
-      <input placeholder="寵物名字" onChange={e => setPet(e.target.value)} />
+        <button
+          onClick={() => router.push('/order')}
+          style={{
+            width: '100%',
+            padding: 14,
+            borderRadius: 12,
+            background: '#111',
+            color: '#fff',
+            fontSize: 16,
+            marginBottom: 12
+          }}
+        >
+          開始點燈祈福
+        </button>
 
-      <textarea
-        value={prayer}
-        onChange={e => setPrayer(e.target.value)}
-      />
+        <button
+          onClick={() => router.push('/admin')}
+          style={{
+            width: '100%',
+            padding: 12,
+            borderRadius: 12,
+            background: '#eee',
+            fontSize: 14
+          }}
+        >
+          宮廟管理入口
+        </button>
 
-      <select onChange={e => setTempleId(e.target.value)}>
-        <option>選宮廟</option>
-        {temples.map(t => (
-          <option key={t.id} value={t.id}>
-            {t.name}
-          </option>
-        ))}
-      </select>
+        <div style={{
+          marginTop: 20,
+          fontSize: 12,
+          color: '#999'
+        }}>
+          ✨ 支援寵物祈福・平安燈・跨宮廟合作
+        </div>
 
-      <select onChange={e => setProductId(e.target.value)}>
-        <option>選方案</option>
-        {products.map(p => (
-          <option key={p.id} value={p.id}>
-            {p.name} - {p.price}
-          </option>
-        ))}
-      </select>
-
-      <button onClick={submit}>
-        點燈祈福
-      </button>
+      </div>
     </div>
   )
 }
